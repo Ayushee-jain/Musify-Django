@@ -1,0 +1,70 @@
+{% extends 'music/basic.html' %}
+
+{%load static %}
+
+{% block title %} Album {{album.album_title}} {% endblock title %}
+
+{% block body %}
+
+<div class="content">
+    <div class="row">
+    <div class="col-sm-3 p-4">
+        <div class="card" style="width: 18rem;">
+            <img src="{{album.album_logo.url}}" class="card-img-top p-3" alt="...">
+            <div class="card-body">
+                <h1 class="card-title">{{ album.album_title }} <small>{{ album.genre }}</small></h1>
+                    <h2 class="card-title">{{ album.artist }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-9 p-4">
+        <div class="col">
+        <ul class="nav nav-pills mb-2">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'music-details' album.id %}">View All</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'music-song-add' album.id %}">Add New Song</a>
+            </li>
+          </ul>
+          <div class="box p-4">
+            {% if all_songs|length == 0 %}
+            <h3 class='text'> Empty Album! </h3>
+            <h6 class='text'> Add songs of your choice. </h6>
+            {% else %}
+              <h3 class='text'> All Songs </h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col" style="text-align:right">Audio File</th>
+                <th scope="col" style="text-align:right">Favorite</th>
+                <th scope="col" style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for song in all_songs %}
+                <tr>
+                    <td>{{song.song_title}}</td>
+                    <td style="text-align:right"><a  class="btn btn-success btn-sm" href="{{ song.audio_file.url }}"><i class="fa fa-play me-2"></i>Play</a></td>
+                    <td style="text-align:right"><a class="btn" aria-current="page" href="{% url 'music-favorite' album.id song.id %}">
+                    {% if song.is_favorite %}
+                    <i class="yellow-star fa fa-star"></i>
+                    {% else %}
+                    <i class="star fas fa-star"></i>
+                    {%endif%}
+                    </a></td>
+                    <td style="text-align:right"><a class="btn btn-danger btn-sm" href="{% url 'music-album-song-delete' album.id song.id %}"><i class="fa fa-times me-2"></i>Delete</a></td>
+                </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+          {%endif%}
+        </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock body %}
+

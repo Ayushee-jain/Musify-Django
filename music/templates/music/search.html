@@ -1,0 +1,84 @@
+{% extends 'music/basic.html' %}
+
+{% load static %}
+
+{% block title %}Searched Items{% endblock title %}
+
+{% block body %}
+
+{% if all_album|length == 0 and all_songs|length == 0 %}
+
+<div class="mt-3 m-4">
+    <h2>No result found for "{{query}}"</h2>
+
+{% endif %}
+
+{%if all_album|length != 0 %}
+<div class="mt-3 m-4">
+    <h2>My Awesome Album</h2>
+    <div class="row">
+        {%for album in all_album %}
+        <div class="col-sm-3 mt-2">
+            <div class="card" style="width: 18rem;">
+                <img src="{{album.album_logo.url}}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">{{album.album_title}}</h5>
+                    <p class="card-text">{{album.artist}}</p>
+                    <div class="col">
+                    <a href="{% url 'music-details' album.id %}" class="btn btn-primary">ViewDetails</a>
+                    <a class="btn trash-border" aria-current="page" href="{% url 'music-album-update' album.id %}"><i class="fas fa-edit"></i></a>
+                    <a class="btn trash-border" aria-current="page" href="{% url 'music-album-delete' album.id %}"><i class="trash fas fa-trash"></i></a>
+                    <a class="btn star-border disabled" aria-current="page" href="{% url 'music-favorite-album' album.id %}">
+                    {% if album.is_favorite %}
+                    <i class="yellow-star fa fa-star"></i>
+                    {% else %}
+                    <i class="star fas fa-star"></i>
+                    {%endif%}
+                    </a>
+                </div>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{%endif%}
+{% if all_songs|length != 0 %}
+<div class="mt-3 m-4">
+<h3 class='text'> Songs </h3>
+        <div class="box p-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Artist</th>
+                        <th scope="col">Audio File</th>
+                        <th scope="col">Album</th>
+                        <th scope="col">Favorite</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in all_songs %}
+                    <tr>
+                        <td>{{song.song_title}}</td>
+                        <td>{{song.album.artist}}</td>
+                        <td><a class="btn btn-success btn-sm" href="{{ song.audio_file.url }}"><i class="fa fa-play me-2"></i>Play</a></td>
+                        <td><a href="{% url 'music-details' song.album.id %}"><img src="{{song.album.album_logo.url}}" class="img-responsive" style="width: 20px; float: left; margin-right: 10px;"/>
+                        <a href="{% url 'music-details' song.album.id %}">{{song.album}}</a></td>
+                        <td><a class="btn disabled" aria-current="page" href="{% url 'music-song-favorite' song.id %}">
+                            {% if song.is_favorite %}
+                            <i class="yellow-star fas fa-star"></i>
+                            {% else %}
+                            <i class="star fas fa-star"></i>
+                            {% endif %}
+                        </a></td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+    </div>
+</div>
+{%endif%}
+
+{% endblock body %}

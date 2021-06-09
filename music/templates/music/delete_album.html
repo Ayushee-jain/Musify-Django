@@ -1,0 +1,24 @@
+{% extends 'music/basic.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Delete Album{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <form action="" method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="box mt-3 p-4">
+            <h3>Delete Album</h3>
+            <hr>
+            Are you sure to delete Album {{album.album_title}}?
+            <br>
+            <div class="form-group mt-3">
+                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                <a class="btn btn-secondary btn-sm" href="{% url 'music-home' %}">Cancel</a>
+            </div>
+        </div>
+</div>
+</form>
+</div>
+{% endblock body %}

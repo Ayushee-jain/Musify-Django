@@ -1,0 +1,46 @@
+{% extends 'music/basic.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Add Album{% endblock title %}
+
+{% block add-album_active %}active{% endblock add-album_active %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="box mt-3 p-4">
+                    <div class="mt-3">
+                    {{form.artist|as_crispy_field}}
+                </div>
+                    <div class="mt-3">
+                    {{form.album_title|as_crispy_field}}
+                </div>
+                    <div class="mt-3">
+                    {{form.genre|as_crispy_field}}
+                </div>
+                    <div class="mt-3">
+                    {{form.album_logo|as_crispy_field}}
+                </div>
+                <button type="submit" class="btn btn-success mt-3">Submit</button>
+            </div>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <div class="box mt-3 p-4">
+                <h3>What is Musify?</h3>
+                <p>Musify is an application that let's you upload, store, and play all of your music from the cloud. You
+                    can
+                    now manage and listen to your music from any device, anywhere in the world.</p>
+                <h3>How do I add music?</h3>
+                <p>First create a new album by filing out the form on this page. Once an album is created you will be
+                    able
+                    to add/upload songs.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

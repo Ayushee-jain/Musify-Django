@@ -1,0 +1,51 @@
+{% extends 'music/basic.html' %}
+
+{% load static %}
+
+{% block title %}Musify{% endblock title %}
+
+{% block albums_active %}active{% endblock albums_active %}
+
+{% block body %}
+
+{% if all_album|length == 0 %}
+
+{% if user.is_authenticated %}
+    <h2 class="m-4"> Create albums and Listen to your favorite songs! </h2>
+{% else %}
+<h2 class="m-4"> Create albums and Listen to your favorite songs after registration! </h2>
+{%endif%}
+
+{% else %}
+
+<div class="container mt-3">
+    <h2>My Awesome Album</h2>
+    <div class="row">
+        {%for album in all_album %}
+        <div class="col-sm-3 mt-2">
+            <div class="card" style="width: 18rem;">
+                <img src="{{album.album_logo.url}}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">{{album.album_title}}</h5>
+                    <p class="card-text">{{album.artist}}</p>
+                    <div class="col">
+                    <a href="{% url 'music-details' album.id %}" class="btn btn-primary">ViewDetails</a>
+                    <a class="btn trash-border" aria-current="page" href="{% url 'music-album-update' album.id %}"><i class="fas fa-edit"></i></a>
+                    <a class="btn trash-border" aria-current="page" href="{% url 'music-album-delete' album.id %}"><i class="trash fas fa-trash"></i></a>
+                    <a class="btn star-border" aria-current="page" href="{% url 'music-favorite-album' album.id %}">
+                    {% if album.is_favorite %}
+                    <i class="yellow-star fa fa-star"></i>
+                    {% else %}
+                    <i class="star fas fa-star"></i>
+                    {%endif%}
+                    </a>
+                </div>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{%endif%}
+
+{% endblock body %}

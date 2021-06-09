@@ -1,0 +1,52 @@
+{% extends 'music/basic.html' %}
+
+{%load static %}
+
+{% block title %} Songs {% endblock title %}
+
+{% block songs_active %}active{% endblock songs_active %}
+
+{% block body %}
+
+<div class="content">
+        <div class="box p-4">
+            {% if all_songs|length == 0 %}
+            <h3 class='text'> Empty List! </h3>
+            <h6 class='text'> Add Songs in your album </h6>
+            {% else %}
+            <h3 class='text'> All Songs </h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Artist</th>
+                        <th scope="col">Audio File</th>
+                        <th scope="col">Album</th>
+                        <th scope="col">Favorite</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in all_songs %}
+                    <tr>
+                        <td>{{song.song_title}}</td>
+                        <td>{{song.album.artist}}</td>
+                        <td><a class="btn btn-success btn-sm" href="{{ song.audio_file.url }}"><i class="fa fa-play me-2"></i>Play</a></td>
+                        <td><a href="{% url 'music-details' song.album.id %}"><img src="{{song.album.album_logo.url}}" class="img-responsive" style="width: 20px; float: left; margin-right: 10px;"/>
+                        <a href="{% url 'music-details' song.album.id %}">{{song.album}}</a></td>
+                        <td><a class="btn" aria-current="page" href="{% url 'music-song-favorite' song.id %}">
+                            {% if song.is_favorite %}
+                            <i class="yellow-star fas fa-star"></i>
+                            {% else %}
+                            <i class="star fas fa-star"></i>
+                            {% endif %}
+                        </a></td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+            {%endif%}
+    </div>
+</div>
+
+{% endblock body %}
